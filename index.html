@@ -78,14 +78,21 @@ main{padding:20px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(saf
 .route{display:flex;flex-direction:column}
 .route h2{margin:0 0 4px;font-size:18px;font-weight:900}
 .site{display:grid;grid-template-columns:64px minmax(0,1fr);gap:0 12px;position:relative;padding-bottom:18px}
-.site:last-child{padding-bottom:0}
+.site.here{padding-bottom:0}
 .site::before{content:'';position:absolute;left:31px;top:30px;bottom:0;width:2px;background:var(--ink)}
-.site:last-child::before{display:none}
+.site.here::before{display:none}
 .yr{width:64px;height:30px;border-radius:99px;background:var(--ink);color:var(--yellow);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;position:relative;z-index:1}
 .site.here .yr{background:var(--green-d);color:#fff}
 .site h3{margin:2px 0;font-size:17px;font-weight:900}
 .site p{margin:0;font-size:14px;line-height:1.7}
-.site .addr{font-size:12px;color:var(--muted);margin-top:4px}
+.site .addr{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 10px 4px 8px;min-height:32px;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:12px;color:var(--ink);text-align:left;cursor:pointer}
+.site .addr svg{flex:none}
+.mapbox{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.maptabs{display:flex;gap:6px;flex-wrap:wrap}
+.maptabs button{min-height:36px;padding:0 12px;border-radius:99px;border:1px solid var(--ink);background:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.maptabs button[aria-pressed=true]{background:var(--ink);color:var(--yellow)}
+.mapframe{width:100%;aspect-ratio:4/3;border:2px solid var(--ink);border-radius:12px;background:#E9E6D6;display:block}
+.mapopen{align-self:flex-start;font-size:13px;font-weight:700;color:var(--green-d)}
 footer{padding:16px 20px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
 @media(prefers-reduced-motion:reduce){.spin .reel,.dot{animation:none}.recbtn span{transition:none}}
 </style>
@@ -182,9 +189,14 @@ footer{padding:16px 20px 24px;font-size:12px;color:var(--muted);border-top:1px s
     <section class="route" id="route" aria-labelledby="routeH">
       <h2 id="routeH" data-i="routeH"></h2>
       <p class="hint" style="margin:0 0 14px" data-i="routeHint"></p>
-      <div class="site"><span class="yr">1936</span><div><h3 data-i="s1n"></h3><p data-i="s1"></p><p class="addr" data-i="s1a"></p></div></div>
-      <div class="site"><span class="yr">1942</span><div><h3 data-i="s2n"></h3><p data-i="s2"></p><p class="addr" data-i="s2a"></p></div></div>
-      <div class="site here"><span class="yr">1944</span><div><h3 data-i="s3n"></h3><p data-i="s3"></p><p class="addr" data-i="s3a"></p></div></div>
+      <div class="site"><span class="yr">1936</span><div><h3 data-i="s1n"></h3><p data-i="s1"></p><button type="button" class="addr" data-map="0"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i="s1a"></span></button></div></div>
+      <div class="site"><span class="yr">1942</span><div><h3 data-i="s2n"></h3><p data-i="s2"></p><button type="button" class="addr" data-map="1"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i="s2a"></span></button></div></div>
+      <div class="site here"><span class="yr">1944</span><div><h3 data-i="s3n"></h3><p data-i="s3"></p><button type="button" class="addr" data-map="2"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i="s3a"></span></button></div></div>
+      <div class="mapbox" id="mapbox">
+        <div class="maptabs" role="group" id="mapTabs"><button type="button" data-map="0" data-i="m1"></button><button type="button" data-map="1" data-i="m2"></button><button type="button" data-map="2" data-i="m3"></button></div>
+        <iframe class="mapframe" id="mapFrame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <a class="mapopen" id="mapOpen" target="_blank" rel="noopener" data-i="mapOpen"></a>
+      </div>
     </section>
   </main>
   <footer><span data-i="ft"></span></footer>
@@ -193,7 +205,7 @@ footer{padding:16px 20px 24px;font-size:12px;color:var(--muted);border-top:1px s
 
 <script>
 /* ======== 設定：後台網址（換後台時，只要改這一行） ======== */
-const API_URL = 'https://kbs1944.kbs1944-sound.workers.dev/';
+const API_URL = 'https://請貼上後台網址.workers.dev/';
 const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
 </script>
 <script>
@@ -230,6 +242,7 @@ const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
       s1n: '將軍府 1936', s1: '日治昭和 11 年興建的軍方宿舍群，是花蓮少見成片保存的日式木造建築聚落。修復後成為開放的庭園園區，縣定古蹟。', s1a: '花蓮市中正路 622 巷 6 號',
       s2n: '松園別館', s2: '1942 年建成，原為花蓮港陸軍兵事部的辦公廳舍，園內琉球松林立。戰後曾作為美軍顧問團招待所，現為歷史建築。', s2a: '花蓮市松園街 65 號',
       s3n: '花蓮港放送局1944', s3: '日治時期在臺灣興建的最後一座放送局，戰後由中國廣播公司花蓮台使用。如今是太平洋音樂基地，也是這個鑰匙圈錄音的起點。', s3a: '花蓮市松園街 96 號',
+      m1: '將軍府 1936', m2: '松園別館', m3: '放送局1944', mapOpen: '在 Google 地圖開啟（導航）→', mapT: '地圖',
       ft: '合作館舍：將軍府 1936・松園別館・花蓮港放送局1944'
     },
     en: {
@@ -262,6 +275,7 @@ const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
       s1n: 'Jiangjunfu 1936', s1: 'Military housing built in 1936 under Japanese rule, and one of the few intact clusters of Japanese wooden houses in Hualien. Restored as an open garden park and listed as a county monument.', s1a: 'No. 6, Lane 622, Zhongzheng Rd., Hualien City',
       s2n: 'Pine Garden', s2: 'Completed in 1942 as offices of the Karenko army military affairs department, among tall Ryukyu pines. After the war it served as a hostel for the US Military Assistance Advisory Group. Now a historic building.', s2a: 'No. 65, Songyuan St., Hualien City',
       s3n: 'Karenko Broadcasting Station 1944', s3: 'The last broadcasting station built in Taiwan under Japanese rule, later home to the Broadcasting Corporation of China’s Hualien station. Today it is the Pacific Music Base, and where this keychain’s recordings begin.', s3a: 'No. 96, Songyuan St., Hualien City',
+      m1: 'Jiangjunfu 1936', m2: 'Pine Garden', m3: 'Broadcasting Station', mapOpen: 'Open in Google Maps (directions) →', mapT: 'Map',
       ft: 'Partner venues: Jiangjunfu 1936 · Pine Garden · Karenko Broadcasting Station 1944'
     },
     ja: {
@@ -294,6 +308,7 @@ const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
       s1n: '将軍府1936', s1: '1936年（昭和11年）に建てられた軍の宿舎群で、花蓮でまとまって残る数少ない日本式木造建築群です。修復後は開放的な庭園となり、県指定古跡に指定されています。', s1a: '花蓮市中正路622巷6号',
       s2n: '松園別館', s2: '1942年に花蓮港陸軍兵事部の庁舎として建てられ、琉球松が立ち並びます。戦後は米軍顧問団の招待所として使われ、現在は歴史建築です。', s2a: '花蓮市松園街65号',
       s3n: '花蓮港放送局1944', s3: '日本統治時代の台湾で最後に建てられた放送局で、戦後は中国広播公司の花蓮局として使われました。現在は太平洋音楽基地として、このキーホルダーの録音の出発点です。', s3a: '花蓮市松園街96号',
+      m1: '将軍府1936', m2: '松園別館', m3: '放送局1944', mapOpen: 'Google マップで開く（ルート）→', mapT: '地図',
       ft: '協力施設：将軍府1936・松園別館・花蓮港放送局1944'
     }
   };
@@ -323,11 +338,27 @@ const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
     if (lang === 'ja') return `${y}年${mo}月${d}日`;
     return `${d} ${['January','February','March','April','May','June','July','August','September','October','November','December'][mo - 1]} ${y}`;
   }
+  /* ---------- 地圖 ---------- */
+  const PLACES = ['將軍府1936 花蓮市中正路622巷6號', '松園別館 花蓮市松園街65號', '花蓮港放送局1944 花蓮市松園街96號'];
+  let mapIdx = 2;
+  function setMap(i) {
+    mapIdx = i;
+    const hl = lang === 'zh' ? 'zh-TW' : lang;
+    $('#mapFrame').src = `https://www.google.com/maps?q=${encodeURIComponent(PLACES[i])}&hl=${hl}&z=17&output=embed`;
+    $('#mapFrame').title = t('mapT') + '：' + t('m' + (i + 1));
+    $('#mapOpen').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(PLACES[i])}`;
+    document.querySelectorAll('#mapTabs [data-map]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.map === i)));
+  }
+  document.addEventListener('click', e => {
+    const m = e.target.closest('[data-map]'); if (!m) return;
+    setMap(+m.dataset.map);
+    if (m.classList.contains('addr')) $('#mapbox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
   function applyLang() {
     document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang;
     document.querySelectorAll('[data-i]').forEach(el => { el.innerHTML = t(el.dataset.i); });
     document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
-    head();
+    head(); setMap(mapIdx);
     $('#recHint').textContent = rec ? t('recOn') : t('recIdle');
     $('#recBtn').setAttribute('aria-label', rec ? t('recStop') : t('recStart'));
     $('#reviewLen').textContent = t('len') + ' ' + fmt(S.seconds);
