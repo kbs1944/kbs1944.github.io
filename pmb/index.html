@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>太平洋音樂基地 聲音鑰匙圈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* 太平洋音樂基地 聲音鑰匙圈：手機單頁，太平洋音樂基地黃綠配色 */
+:root{
+  --ink:#141414; --yellow:#F4D03A; --lime:#A8CC1E; --green:#4E9A2F; --green-d:#3D7F22;
+  --paper:#FDF7DA; --card:#FFFFFF; --line:#D6D3C4; --muted:#5E5A4E; --gray:#C8C8C8; --err:#A33A2A;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;padding-bottom:env(safe-area-inset-bottom,0px)}
+:lang(ja) body{font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--green-d);outline-offset:2px}
+.page{max-width:480px;margin:0 auto}
+.stripe{display:flex;height:12px}.stripe i{flex:1}
+.hd{background:var(--yellow);padding:16px max(20px,env(safe-area-inset-right,0px)) 22px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:6px}
+.lang{display:flex;gap:2px;align-self:flex-end;background:rgba(20,20,20,.08);border-radius:99px;padding:3px}
+.lang button{min-width:44px;min-height:36px;border:none;border-radius:99px;background:transparent;font-size:13px;font-weight:700;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--yellow)}
+.eyebrow{font-size:13px;font-weight:500}
+h1{margin:0;font-weight:900;font-size:30px;line-height:1.2;text-wrap:balance}
+.hd p{margin:0;font-size:15px}
+.tag{display:inline-flex;align-self:flex-start;font-size:13px;font-weight:700;background:var(--ink);color:var(--yellow);padding:2px 10px;border-radius:99px;font-variant-numeric:tabular-nums}
+main{padding:20px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:10px;border:none;background:var(--green-d);color:#fff;font-weight:700;font-size:17px;cursor:pointer;width:100%;padding:0 14px;text-align:center}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);font-weight:500;font-size:15px;min-height:46px}
+.btn.dark{background:var(--ink)}
+.btn.danger{background:transparent;color:var(--err);border:1.5px solid var(--err);font-weight:500;font-size:15px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.panel h2{margin:0;font-size:18px;font-weight:900}
+.rules{font-size:13px;color:var(--muted);background:var(--paper);border-radius:8px;padding:10px 12px 10px 28px;margin:0}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.6;cursor:pointer}
+.chk input{width:22px;height:22px;margin-top:1px;accent-color:var(--green-d);flex:none}
+.pin{display:flex;gap:8px}
+.pin input{width:54px;height:58px;text-align:center;font-size:24px;font-weight:700;border:1.5px solid var(--line);border-radius:8px;background:#fff}
+.pin input.one{width:150px;letter-spacing:10px}
+.pin input:focus{border-color:var(--green-d)}
+.err{color:var(--err);font-size:14px;margin:0}
+.notice{background:#fff;border:1.5px solid var(--err);border-radius:10px;padding:12px 14px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.notice ol{margin:0;padding-left:20px}
+.rec{display:flex;flex-direction:column;align-items:center;gap:16px;padding:6px 0}
+.clock{font-weight:900;font-size:44px;font-variant-numeric:tabular-nums;line-height:1}
+.clock small{font-size:16px;color:var(--muted);font-weight:500}
+.meter{display:flex;gap:4px;align-items:center;height:56px}
+.meter i{width:6px;border-radius:3px;background:var(--gray);height:8px}
+.recording .meter i{background:var(--green)}
+.recbtn{width:96px;height:96px;border-radius:50%;border:6px solid var(--ink);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.recbtn span{width:44px;height:44px;border-radius:50%;background:#D23A2A;transition:all .15s}
+.recording .recbtn span{width:34px;height:34px;border-radius:6px}
+.upload{display:flex;align-items:center;justify-content:center;min-height:44px;font-size:14px;text-decoration:underline;cursor:pointer;color:var(--ink)}
+.upload input{position:absolute;width:1px;height:1px;opacity:0}
+.player{background:var(--yellow);border-radius:14px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.reels{display:flex;gap:22px}
+.reel{width:88px;height:88px;border-radius:50%;background:var(--green);position:relative;display:flex;align-items:center;justify-content:center}
+.reel::before{content:'';width:18px;height:18px;border-radius:50%;background:var(--yellow)}
+.reel i{position:absolute;width:22px;height:22px;border-radius:50%;background:#2B3A2A}
+.reel i:nth-child(1){top:13px;left:33px}.reel i:nth-child(2){bottom:17px;left:15px}.reel i:nth-child(3){bottom:17px;right:15px}
+.spin .reel{animation:r 3s linear infinite}
+@keyframes r{to{transform:rotate(360deg)}}
+.play{width:72px;height:72px;border-radius:50%;border:none;background:var(--ink);color:var(--yellow);font-size:28px;cursor:pointer}
+.play:disabled{opacity:.4;cursor:wait}
+.prog{width:100%;max-width:260px;height:6px;border-radius:99px;background:rgba(20,20,20,.12);overflow:hidden}.prog span{display:block;height:100%;width:0;background:var(--ink)}
+.busy{display:flex;align-items:center;justify-content:center;gap:10px;padding:24px 0;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--green);animation:p 1s ease-in-out infinite}
+@keyframes p{50%{opacity:.25}}
+.route{display:flex;flex-direction:column}
+.route h2{margin:0 0 4px;font-size:18px;font-weight:900}
+.site{display:grid;grid-template-columns:64px minmax(0,1fr);gap:0 12px;position:relative;padding-bottom:18px}
+.site.here{padding-bottom:0}
+.site::before{content:'';position:absolute;left:31px;top:30px;bottom:0;width:2px;background:var(--ink)}
+.site.here::before{display:none}
+.yr{width:64px;height:30px;border-radius:99px;background:var(--ink);color:var(--yellow);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;position:relative;z-index:1}
+.site .yr{background:var(--green-d);color:#fff}
+.site h3{margin:2px 0;font-size:17px;font-weight:900}
+.site p{margin:0;font-size:14px;line-height:1.7}
+.site .addr{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 9px 4px 7px;min-height:32px;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:12px;color:var(--ink);text-align:left;cursor:pointer}
+.site .addr svg{flex:none}
+.fbname{display:inline-flex;align-items:center;gap:8px;height:30px;color:var(--ink);text-decoration:none}
+.fbname svg{flex:none;position:relative;top:-1px}
+.fbname:not([href]) svg{display:none}
+.route h2.vn{margin:0 0 4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mapbox{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.maptabs{display:flex;gap:6px;flex-wrap:wrap}
+.maptabs button{min-height:36px;padding:0 12px;border-radius:99px;border:1px solid var(--ink);background:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.maptabs button[aria-pressed=true]{background:var(--ink);color:var(--yellow)}
+.mapframe{width:100%;aspect-ratio:4/3;border:2px solid var(--ink);border-radius:12px;background:#E9E6D6;display:block}
+.mapopen{align-self:flex-start;font-size:13px;font-weight:700;color:var(--green-d)}
+footer{padding:16px 20px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+@media(prefers-reduced-motion:reduce){.spin .reel,.dot{animation:none}.recbtn span{transition:none}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="stripe" aria-hidden="true"><i style="background:#A8CC1E"></i><i style="background:#fff"></i><i style="background:#4E9A2F"></i><i style="background:#C8C8C8"></i><i style="background:#141414"></i><i style="background:#fff"></i><i style="background:#A8CC1E"></i><i style="background:#4E9A2F"></i></div>
+  <header class="hd">
+    <div class="lang" role="group" aria-label="Language 語言"><button type="button" data-lang="zh">中</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="ja">日</button></div>
+    <span class="eyebrow" data-i="eyebrow"></span>
+    <h1 id="hdTitle"></h1>
+    <p id="hdSub"></p>
+    <span class="tag" id="tag" hidden></span>
+  </header>
+
+  <main>
+    <div class="busy" id="vLoading"><span class="dot"></span><span data-i="loading"></span></div>
+    <div class="notice" id="vError" hidden><b id="errTitle"></b><span id="errBody"></span></div>
+
+    <!-- 未錄音 -->
+    <section id="vStart" class="stack" hidden>
+      <button class="btn" type="button" id="toConsent" data-i="recordBtn"></button>
+      <button class="btn ghost" type="button" data-scroll data-i="browse"></button>
+      <p class="hint" data-i="startHint"></p>
+    </section>
+
+    <!-- 同意與密碼 -->
+    <section id="vConsent" class="panel" hidden>
+      <h2 data-i="consentH"></h2>
+      <ul class="rules"><li data-i="rule1"></li><li data-i="rule2"></li><li data-i="rule3"></li></ul>
+      <p class="hint" style="font-weight:700;color:var(--ink)" data-i="minor"></p>
+      <label class="chk"><input type="checkbox" id="agree"><span data-i="agree"></span></label>
+      <label class="chk"><input type="checkbox" id="exhibit"><span data-i="exhibit"></span></label>
+      <div class="stack" id="pinSet" style="gap:6px">
+        <span style="font-size:14px;font-weight:700" data-i="pinH"></span>
+        <span class="hint" data-i="pinHint"></span>
+        <div class="pin"><input inputmode="numeric" maxlength="1" id="p1" autocomplete="off"><input inputmode="numeric" maxlength="1" id="p2" autocomplete="off"><input inputmode="numeric" maxlength="1" id="p3" autocomplete="off"><input inputmode="numeric" maxlength="1" id="p4" autocomplete="off"></div>
+      </div>
+      <p class="err" id="cErr" hidden></p>
+      <button class="btn" type="button" id="toRec" data-i="next"></button>
+      <button class="btn ghost" type="button" id="backStart" data-i="back"></button>
+    </section>
+
+    <!-- 錄音 -->
+    <section id="vRec" class="panel" hidden>
+      <h2 data-i="recH"></h2>
+      <p class="hint" data-i="recTip"></p>
+      <div class="notice" id="micHelp" hidden></div>
+      <div class="rec" id="recBox">
+        <div class="clock" id="clock">0:00 <small>/ 1:00</small></div>
+        <div class="meter" id="meter" aria-hidden="true"></div>
+        <button class="recbtn" type="button" id="recBtn"><span></span></button>
+        <span class="hint" id="recHint"></span>
+      </div>
+      <label class="upload"><input type="file" id="upFile" accept="audio/*,.m4a,.mp3,.aac,.wav"><span data-i="uploadAlt"></span></label>
+    </section>
+
+    <!-- 試聽確認 -->
+    <section id="vReview" class="panel" hidden>
+      <h2 data-i="reviewH"></h2>
+      <div class="player" id="pv1">
+        <div class="reels" aria-hidden="true"><div class="reel"><i></i><i></i><i></i></div><div class="reel"><i></i><i></i><i></i></div></div>
+        <button class="play" type="button" id="reviewPlay">▶</button>
+        <span style="font-size:14px" id="reviewLen"></span>
+      </div>
+      <p class="err" id="sErr" hidden></p>
+      <button class="btn" type="button" id="save" data-i="save"></button>
+      <button class="btn ghost" type="button" id="redo" data-i="redo"></button>
+    </section>
+
+    <!-- 已錄音 -->
+    <section id="vPlay" class="stack" hidden>
+      <div class="player" id="pv2">
+        <span style="font-size:14px;font-weight:700" id="savedMsg" data-i="saved" hidden></span>
+        <div class="reels" aria-hidden="true"><div class="reel"><i></i><i></i><i></i></div><div class="reel"><i></i><i></i><i></i></div></div>
+        <button class="play" type="button" id="mainPlay" disabled>▶</button>
+        <div class="prog"><span id="mainProg"></span></div>
+        <span style="font-size:14px" id="recDate"></span>
+      </div>
+      <button class="btn ghost" type="button" id="toPin" data-i="toPin"></button>
+      <div class="panel" id="pinBox" hidden>
+        <span style="font-size:14px;font-weight:700" data-i="pinAsk"></span>
+        <div class="pin"><input class="one" inputmode="numeric" maxlength="4" id="pinAll" autocomplete="off"></div>
+        <p class="err" id="pErr" hidden></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn dark" type="button" id="pinRedo" data-i="redo"></button>
+          <button class="btn danger" type="button" id="pinDel" data-i="del" style="min-height:52px"></button>
+        </div>
+        <p class="err" id="delAsk" hidden data-i="delAsk"></p>
+      </div>
+    </section>
+
+    <!-- 兩個場館 -->
+    <section class="route" id="route" aria-labelledby="routeH">
+      <h2 id="routeH" class="vn"><a class="fbname" data-fb="0" target="_blank" rel="noopener"><span data-i="routeH"></span><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path fill="#fff" d="M13.4 20v-6.3h2.1l.3-2.5h-2.4V9.7c0-.7.2-1.2 1.2-1.2h1.3V6.3c-.2 0-1-.1-1.9-.1-1.9 0-3.1 1.1-3.1 3.2v1.8H8.8v2.5h2.1V20z"/></svg><span class="sr"> Facebook</span></a></h2>
+      <p class="hint" style="margin:0 0 14px" data-i="routeHint"></p>
+      <div class="site here-first"><span class="yr">01</span><div><h3 data-i="s1n"></h3><p data-i="s1"></p><button type="button" class="addr" data-map="0"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i="s1a"></span></button></div></div>
+      <div class="site here"><span class="yr">02</span><div><h3 data-i="s2n"></h3><p data-i="s2"></p><button type="button" class="addr" data-map="1"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span data-i="s2a"></span></button></div></div>
+      <div class="mapbox" id="mapbox">
+        <div class="maptabs" role="group" id="mapTabs"><button type="button" data-map="0" data-i="m1"></button><button type="button" data-map="1" data-i="m2"></button></div>
+        <iframe class="mapframe" id="mapFrame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <a class="mapopen" id="mapOpen" target="_blank" rel="noopener" data-i="mapOpen"></a>
+      </div>
+    </section>
+  </main>
+  <footer><span data-i="ft"></span></footer>
+  <audio id="au" preload="auto" hidden></audio>
+</div>
+
+<script>
+/* ======== 設定：後台網址（換後台時，只要改這一行） ======== */
+const API_URL = 'https://kbs1944.kbs1944-sound.workers.dev/';
+const PROJECT = 'pmb';   // 太平洋音樂基地（後台管理頁的分頁），不要改
+/* 各館臉書粉專網址（留空＝不顯示按鈕） */
+const FB_LINKS = ['https://www.facebook.com/people/太平洋音樂基地/61593997581964/'];   // 太平洋音樂基地粉專（點「太平洋音樂基地」標題即開啟）
+const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
+</script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const I18N = {
+    zh: {
+      eyebrow: '太平洋音樂基地・聲音鑰匙圈', loading: '載入中…',
+      titleHome: '一座放送局，<br>一座鐵道舊工務段', subHome: '太平洋音樂基地由花蓮港放送局1944與花蓮鐵道文化園區二館舊工務段組成，是花蓮的聲音與音樂現場。',
+      title0: '你手上的鑰匙圈，<br>可以存一段聲音', sub0: '在曾經向太平洋播送聲音的地方，錄下你想留住的一段話、一段旋律。之後手機一碰，就能再聽見。',
+      title1: '這是你留在<br>太平洋音樂基地的聲音', sub1: '按下播放，回到那一天。也歡迎再回來聽一場音樂。', subDel: '錄音已刪除。鑰匙圈回到空白狀態，想錄的時候再錄就好。',
+      tag: '鑰匙圈 #{n}',
+      recordBtn: '● 錄下我的聲音（1 分鐘內）', browse: '先逛逛，之後再錄', startHint: '不錄也沒關係。鑰匙圈會一直記得這個位置，哪天想錄，再碰一次就好。',
+      consentH: '錄音前，先確認兩件事', rule1: '錄音最長 1 分鐘，存在本鑰匙圈專屬的位置。', rule2: '請勿錄製政治宣傳、商業廣告或不當言論。', rule3: '拿到這個鑰匙圈的人都能聽到這段錄音。',
+      minor: '未滿 18 歲請由家長或監護人勾選。',
+      agree: '<b>（必填）</b>我同意上述說明，並同意依個人資料保護法保存本段錄音，作為本鑰匙圈紀念用途。',
+      exhibit: '<b>（選填）</b>我願意讓這段錄音在太平洋音樂基地（花蓮港放送局1944、花蓮鐵道文化園區二館舊工務段）館內展示，及用於成果紀錄，以匿名方式呈現，不顯示姓名。本項授權花蓮縣文化局及其委託之營運單位無償使用；我可以隨時用密碼刪除錄音，已展示的內容將於下次更新展示時移除。不勾選也可以錄音。',
+      pinH: '設一組 4 位數密碼', pinHint: '之後要重錄或刪除時使用，避免別人拿到鑰匙圈蓋掉你的錄音。請自行記住，忘記密碼就無法重錄或刪除。',
+      next: '下一步：開始錄音', back: '返回', errAgree: '請先勾選必填的同意項目', errPin: '請設定 4 位數密碼',
+      recH: '準備好就按紅色按鈕', recTip: '第一次會詢問麥克風權限，請按「允許」。可以說一段話、哼一段旋律，或錄下現場的聲音。',
+      recIdle: '按一下開始，再按一下停止', recOn: '錄音中…再按一下停止', recStart: '開始錄音', recStop: '停止錄音',
+      uploadAlt: '或上傳手機錄好的錄音檔',
+      micDenied: '<b>無法使用麥克風</b><ol><li>iPhone：點網址列左邊的「大小」圖示 →「網站設定」→ 麥克風選「允許」，再重新整理。</li><li>Android：點網址列左邊的圖示 →「權限」→ 開啟麥克風，再重新整理。</li></ol><span>也可以先用手機的錄音 App 錄好，再按下方「上傳錄音檔」。</span>',
+      noMic: '<b>這個瀏覽器不能錄音</b><span>請改用 Safari（iPhone）或 Chrome（Android）打開這一頁；從 LINE 打開的話，請點右上角選單「用預設瀏覽器開啟」。</span>',
+      badFile: '錄音檔需在 1 分鐘以內、5MB 以下。',
+      reviewH: '聽聽看，滿意就保存', len: '錄音長度', save: '保存到鑰匙圈', saving: '保存中，請稍候…', redo: '重錄', play: '播放', stop: '停止',
+      saved: '保存完成！之後手機碰鑰匙圈就會打開這裡。', recDate: '{d}，你在太平洋音樂基地留下的聲音',
+      toPin: '重錄或刪除（需要密碼）', pinAsk: '輸入錄音時設定的 4 位數密碼', del: '刪除錄音', delAsk: '刪除後無法復原。確定要刪除，請再按一次「刪除錄音」。',
+      pinBad: '密碼不正確，還可以再試 {n} 次。', pinLocked: '密碼錯誤太多次，請 {m} 分鐘後再試。',
+      eNotFound: '找不到這個鑰匙圈', eNotFoundB: '請確認感應的是太平洋音樂基地的聲音鑰匙圈，或重新碰一次。',
+      eRemoved: '這段錄音已暫停播放', eRemovedB: '如有疑問，請洽太平洋音樂基地。',
+      eNet: '網路不穩，請稍後再試一次。', eBusy: '目前使用人數較多，請稍後再試。', eServer: '系統忙碌中，請稍後再試。',
+      routeH: '太平洋音樂基地', routeHint: '一處保存聲音的歷史，一處讓當代音樂發生。',
+      s1n: '花蓮港放送局1944', s1: '日治時期在臺灣興建的最後一座放送局，戰後由中國廣播公司花蓮台使用，現為歷史建築。如今是太平洋音樂基地的主題展與系列活動場館，也是這個鑰匙圈的起點。', s1a: '花蓮市松園街96號',
+      s2n: '花蓮鐵道文化園區二館舊工務段', s2: '園區內的舊工務段建築，過去是鐵道維修養護的工作據點。現在是太平洋音樂基地的當代音樂推廣場域，舉辦演出、講座與音樂人才培訓。', s2a: '花蓮市福建街460號',
+      m1: '花蓮港放送局1944', m2: '花蓮鐵道文化園區二館舊工務段', fb: '粉絲專頁', mapOpen: '在 Google 地圖開啟（導航）→', mapT: '地圖',
+      ft: '太平洋音樂基地：花蓮港放送局1944・花蓮鐵道文化園區二館舊工務段'
+    },
+    en: {
+      eyebrow: 'Pacific Music Base · Sound Keychain', loading: 'Loading…',
+      titleHome: 'A broadcasting station<br>and a railway workshop', subHome: 'The Pacific Music Base brings together the Karenko Broadcasting Station 1944 and Hualien Railway Culture Park Hall 2, Old Construction Section: Hualien’s home for sound and live music.',
+      title0: 'Your keychain can<br>keep a sound', sub0: 'In a place that once broadcast across the Pacific, record a few words or a melody you want to keep. Tap your phone again later to hear it.',
+      title1: 'The sound you left at<br>the Pacific Music Base', sub1: 'Press play to go back to that day, and come back for more music.', subDel: 'Your recording has been deleted. The keychain is blank again, so record whenever you like.',
+      tag: 'Keychain #{n}',
+      recordBtn: '● Record my voice (up to 1 min)', browse: 'Explore first, record later', startHint: 'No need to record now. Your keychain keeps its spot. Tap it again whenever you are ready.',
+      consentH: 'Before you record', rule1: 'Up to 1 minute, saved to this keychain only.', rule2: 'No political campaigning, advertising or offensive content.', rule3: 'Anyone holding this keychain can hear the recording.',
+      minor: 'Under 18? A parent or guardian should tick these boxes.',
+      agree: '<b>(Required)</b> I agree to the above and consent to this recording being kept as a keepsake for this keychain under Taiwan’s Personal Data Protection Act.',
+      exhibit: '<b>(Optional)</b> I allow this recording to be played in exhibitions at the Pacific Music Base (Karenko Broadcasting Station 1944 and Hualien Railway Culture Park Hall 2, Old Construction Section) and used in program records, anonymously and without my name. This permission is given free of charge to the Hualien County Cultural Affairs Bureau and its commissioned operators. I can delete the recording at any time with my PIN, and recordings already on display will be removed at the next exhibition update. You can record without ticking this box.',
+      pinH: 'Set a 4-digit PIN', pinHint: 'You will need it to re-record or delete, so nobody else can overwrite your recording. Please remember it. A forgotten PIN cannot be recovered.',
+      next: 'Next: start recording', back: 'Back', errAgree: 'Please tick the required box first.', errPin: 'Please set a 4-digit PIN.',
+      recH: 'Press the red button when ready', recTip: 'Your phone will ask for microphone access the first time. Tap “Allow”. Say a few words, hum a tune, or capture the sounds around you.',
+      recIdle: 'Tap to start, tap again to stop', recOn: 'Recording… tap again to stop', recStart: 'Start recording', recStop: 'Stop recording',
+      uploadAlt: 'Or upload a recording from your phone',
+      micDenied: '<b>The microphone is blocked</b><ol><li>iPhone: tap the “aA” icon in the address bar → Website Settings → set Microphone to Allow, then reload.</li><li>Android: tap the icon left of the address → Permissions → turn on Microphone, then reload.</li></ol><span>You can also record with your phone’s voice recorder app and upload the file below.</span>',
+      noMic: '<b>This browser cannot record</b><span>Please open this page in Safari (iPhone) or Chrome (Android). If you opened it from LINE, use the menu to open it in your default browser.</span>',
+      badFile: 'The file must be under 1 minute and 5 MB.',
+      reviewH: 'Have a listen, then save', len: 'Length', save: 'Save to keychain', saving: 'Saving…', redo: 'Re-record', play: 'Play', stop: 'Stop',
+      saved: 'Saved! From now on, tapping the keychain opens this page.', recDate: 'Your sound from the Pacific Music Base, {d}',
+      toPin: 'Re-record or delete (PIN required)', pinAsk: 'Enter the 4-digit PIN you set', del: 'Delete', delAsk: 'Deleting cannot be undone. Tap “Delete” again to confirm.',
+      pinBad: 'Incorrect PIN. {n} tries left.', pinLocked: 'Too many wrong PINs. Please try again in {m} minutes.',
+      eNotFound: 'Keychain not found', eNotFoundB: 'Please make sure this is a Pacific Music Base sound keychain, or tap it again.',
+      eRemoved: 'This recording is unavailable', eRemovedB: 'Please contact the Pacific Music Base.',
+      eNet: 'Connection problem. Please try again.', eBusy: 'Many people are recording right now. Please try again shortly.', eServer: 'Something went wrong. Please try again later.',
+      routeH: 'Pacific Music Base', routeHint: 'One keeps the history of sound; the other is where today’s music happens.',
+      s1n: 'Karenko Broadcasting Station 1944', s1: 'The last broadcasting station built in Taiwan under Japanese rule, later the Hualien station of the Broadcasting Corporation of China, and now a historic building. Today it hosts the Pacific Music Base’s exhibitions and programs, and it is where this keychain begins.', s1a: 'No. 96, Songyuan St., Hualien City',
+      s2n: 'Hualien Railway Culture Park Hall 2, Old Construction Section', s2: 'The park’s former track maintenance office, once a base for railway upkeep. Today it is the Pacific Music Base’s venue for contemporary music, with concerts, talks and training for musicians.', s2a: 'No. 460, Fujian St., Hualien City',
+      m1: 'Broadcasting Station 1944', m2: 'Railway Hall 2, Old Construction Section', fb: 'Facebook', mapOpen: 'Open in Google Maps (directions) →', mapT: 'Map',
+      ft: 'Pacific Music Base: Karenko Broadcasting Station 1944 · Hualien Railway Culture Park Hall 2, Old Construction Section'
+    },
+    ja: {
+      eyebrow: '太平洋音楽基地・サウンドキーホルダー', loading: '読み込み中…',
+      titleHome: '放送局と、<br>鉄道の旧工務段', subHome: '太平洋音楽基地は、花蓮港放送局1944と花蓮鉄道文化園区二館旧工務段からなる、花蓮の音と音楽の拠点です。',
+      title0: 'このキーホルダーに、<br>音をひとつ残せます', sub0: 'かつて太平洋へ電波を送った場所で、残したい言葉やメロディーを録音しましょう。あとでスマホをかざせば、いつでも聞き返せます。',
+      title1: '太平洋音楽基地に<br>残したあなたの音', sub1: '再生して、あの日に戻りましょう。また音楽を聴きに来てください。', subDel: '録音を削除しました。キーホルダーは空の状態に戻りました。いつでも録り直せます。',
+      tag: 'キーホルダー #{n}',
+      recordBtn: '● 声を録音する（1分以内）', browse: '先に見学して、あとで録音', startHint: '今すぐ録音しなくても大丈夫です。準備ができたら、もう一度かざしてください。',
+      consentH: '録音の前に', rule1: '録音は最長1分、このキーホルダー専用に保存されます。', rule2: '政治宣伝、広告、不適切な内容は録音しないでください。', rule3: 'このキーホルダーを持つ人は誰でも録音を聞くことができます。',
+      minor: '18歳未満の方は、保護者の方がチェックしてください。',
+      agree: '<b>（必須）</b>上記に同意し、このキーホルダーの記念として、台湾の個人情報保護法に基づき録音を保存することに同意します。',
+      exhibit: '<b>（任意）</b>この録音を太平洋音楽基地（花蓮港放送局1944・花蓮鉄道文化園区二館旧工務段）の館内展示および活動記録に、匿名（氏名非表示）で使用することに同意します。花蓮県文化局およびその委託運営者に無償で許諾します。暗証番号でいつでも録音を削除でき、展示中のものは次回の展示更新時に取り下げられます。チェックしなくても録音できます。',
+      pinH: '4桁の暗証番号を設定', pinHint: '録り直しや削除に使います。他の人に上書きされないためのものです。忘れると録り直し・削除ができませんのでご注意ください。',
+      next: '次へ：録音を始める', back: '戻る', errAgree: '必須の項目にチェックしてください。', errPin: '4桁の暗証番号を設定してください。',
+      recH: '準備ができたら赤いボタンを', recTip: '初回はマイクの使用許可を求められます。「許可」を押してください。言葉でも、鼻歌でも、その場の音でもかまいません。',
+      recIdle: '押して開始、もう一度押して停止', recOn: '録音中…もう一度押して停止', recStart: '録音開始', recStop: '録音停止',
+      uploadAlt: 'スマホで録った音声ファイルをアップロード',
+      micDenied: '<b>マイクが使えません</b><ol><li>iPhone：アドレスバーの「ぁあ」→「Webサイトの設定」→ マイクを「許可」にして再読み込み。</li><li>Android：アドレスバー左のアイコン →「権限」→ マイクをオンにして再読み込み。</li></ol><span>ボイスメモなどで録音して、下からアップロードすることもできます。</span>',
+      noMic: '<b>このブラウザでは録音できません</b><span>Safari（iPhone）または Chrome（Android）で開いてください。LINE から開いた場合は、メニューから既定のブラウザで開いてください。</span>',
+      badFile: 'ファイルは1分以内、5MB以下にしてください。',
+      reviewH: '聞いてみて、よければ保存', len: '録音時間', save: 'キーホルダーに保存', saving: '保存中…', redo: '録り直す', play: '再生', stop: '停止',
+      saved: '保存しました！今後はキーホルダーにかざすと、このページが開きます。', recDate: '{d}、太平洋音楽基地に残したあなたの音',
+      toPin: '録り直し・削除（暗証番号が必要）', pinAsk: '録音時に設定した4桁の暗証番号', del: '録音を削除', delAsk: '削除すると元に戻せません。もう一度「録音を削除」を押してください。',
+      pinBad: '暗証番号が違います。あと {n} 回試せます。', pinLocked: '入力ミスが多すぎます。{m} 分後にもう一度お試しください。',
+      eNotFound: 'キーホルダーが見つかりません', eNotFoundB: '太平洋音楽基地のサウンドキーホルダーか確認して、もう一度かざしてください。',
+      eRemoved: 'この録音は現在再生できません', eRemovedB: '太平洋音楽基地までお問い合わせください。',
+      eNet: '通信が不安定です。もう一度お試しください。', eBusy: '現在混み合っています。しばらくしてからお試しください。', eServer: 'エラーが発生しました。しばらくしてからお試しください。',
+      routeH: '太平洋音楽基地', routeHint: '音の歴史を伝える場所と、いまの音楽が生まれる場所。',
+      s1n: '花蓮港放送局1944', s1: '日本統治時代の台湾で最後に建てられた放送局で、戦後は中国広播公司の花蓮局として使われ、現在は歴史建築です。太平洋音楽基地の展示とイベントの会場であり、このキーホルダーの出発点です。', s1a: '花蓮市松園街96号',
+      s2n: '花蓮鉄道文化園区二館旧工務段', s2: '園区内の旧工務段の建物で、かつては鉄道の保守作業の拠点でした。現在は太平洋音楽基地の現代音楽の会場として、ライブ、トーク、音楽人材の育成講座が行われています。', s2a: '花蓮市福建街460号',
+      m1: '花蓮港放送局1944', m2: '花蓮鉄道文化園区二館旧工務段', fb: 'Facebook', mapOpen: 'Google マップで開く（ルート）→', mapT: '地図',
+      ft: '太平洋音楽基地：花蓮港放送局1944・花蓮鉄道文化園区二館旧工務段'
+    }
+  };
+
+  /* ---------- 狀態 ---------- */
+  const code = (new URLSearchParams(location.search).get('c') || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 12);
+  const S = { mode: code ? 'loading' : 'home', no: '', recordedAt: '', pin: '', rerecord: false, blob: null, mime: '', seconds: 0, deleted: false, errKey: '' };
+  const pickLang = () => { try { const v = localStorage.getItem('pmbLang'); if (I18N[v]) return v; } catch (e) {} const n = (navigator.language || 'zh').toLowerCase(); return n.startsWith('zh') ? 'zh' : n.startsWith('ja') ? 'ja' : 'en'; };
+  let lang = pickLang();
+  const t = (k, v) => String(I18N[lang][k] || '').replace(/\{(\w)\}/g, (m, x) => (v && v[x] != null ? v[x] : ''));
+  const VIEWS = ['vLoading', 'vError', 'vStart', 'vConsent', 'vRec', 'vReview', 'vPlay'];
+  let view = code ? 'vLoading' : '';
+  function show(v) { view = v; VIEWS.forEach(id => { $('#' + id).hidden = id !== v; }); head(); if (v && v !== 'vStart' && v !== 'vLoading') $('main').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  function head() {
+    let ti = 'title0', su = 'sub0';
+    if (!code) { ti = 'titleHome'; su = 'subHome'; }
+    else if (view === 'vPlay') { ti = 'title1'; su = 'sub1'; }
+    else if (S.deleted) su = 'subDel';
+    $('#hdTitle').innerHTML = t(ti); $('#hdSub').textContent = t(su);
+    $('#tag').hidden = !S.no; $('#tag').textContent = t('tag', { n: S.no });
+  }
+  function fmt(s) { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function fmtDate(str) {
+    const m = String(str).match(/(\d{4})-(\d{2})-(\d{2})/); if (!m) return '';
+    const y = +m[1], mo = +m[2], d = +m[3];
+    if (lang === 'zh') return `${y - 1911} 年 ${mo} 月 ${d} 日`;
+    if (lang === 'ja') return `${y}年${mo}月${d}日`;
+    return `${d} ${['January','February','March','April','May','June','July','August','September','October','November','December'][mo - 1]} ${y}`;
+  }
+  /* ---------- 臉書連結 ---------- */
+  document.querySelectorAll('[data-fb]').forEach(a => { const u = FB_LINKS[+a.dataset.fb]; if (u) a.href = u; });
+  /* ---------- 地圖 ---------- */
+  const PLACES = ['花蓮港放送局1944 花蓮市松園街96號', '花蓮鐵道文化園區二館舊工務段 花蓮市福建街460號'];
+  let mapIdx = 0;
+  function setMap(i) {
+    mapIdx = i;
+    const hl = lang === 'zh' ? 'zh-TW' : lang;
+    $('#mapFrame').src = `https://www.google.com/maps?q=${encodeURIComponent(PLACES[i])}&hl=${hl}&z=17&output=embed`;
+    $('#mapFrame').title = t('mapT') + '：' + t('m' + (i + 1));
+    $('#mapOpen').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(PLACES[i])}`;
+    document.querySelectorAll('#mapTabs [data-map]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.map === i)));
+  }
+  document.addEventListener('click', e => {
+    const m = e.target.closest('[data-map]'); if (!m) return;
+    setMap(+m.dataset.map);
+    if (m.classList.contains('addr')) $('#mapbox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  function applyLang() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang;
+    document.querySelectorAll('[data-i]').forEach(el => { el.innerHTML = t(el.dataset.i); });
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    head(); setMap(mapIdx);
+    $('#recHint').textContent = rec ? t('recOn') : t('recIdle');
+    $('#recBtn').setAttribute('aria-label', rec ? t('recStop') : t('recStart'));
+    $('#reviewLen').textContent = t('len') + ' ' + fmt(S.seconds);
+    $('#recDate').textContent = S.recordedAt ? t('recDate', { d: fmtDate(S.recordedAt) }) : '';
+    ['#reviewPlay', '#mainPlay'].forEach(s => $(s).setAttribute('aria-label', t('play')));
+    if (S.errKey) showError(S.errKey);
+    if (!$('#micHelp').hidden) $('#micHelp').innerHTML = t($('#micHelp').dataset.k);
+  }
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('pmbLang', lang); } catch (e) {} applyLang(); }));
+  function showError(k) { S.errKey = k; $('#errTitle').textContent = t(k); $('#errBody').textContent = t(k + 'B'); show('vError'); }
+
+  /* ---------- 連線 ---------- */
+  async function apiGet(action) {
+    const r = await fetch(`${API_URL}?action=${action}&p=${PROJECT}&c=${encodeURIComponent(code)}`, { cache: 'no-store' });
+    return r.json();
+  }
+  async function apiPost(body) {
+    const r = await fetch(API_URL, { method: 'POST', body: JSON.stringify(Object.assign({ c: code, p: PROJECT }, body)) });   // text/plain，不觸發預檢
+    return r.json();
+  }
+  const errMsg = e => (e === 'busy' ? t('eBusy') : e === 'network' ? t('eNet') : t('eServer'));
+
+  /* ---------- 播放 ---------- */
+  const au = $('#au');
+  let playingBtn = null, playerBox = null;
+  function setAudio(blob) { if (au.src) URL.revokeObjectURL(au.src); au.src = URL.createObjectURL(blob); au.load(); }
+  function b64ToBlob(b64, mime) { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new Blob([u], { type: mime }); }
+  async function loadSaved() {
+    $('#mainPlay').disabled = true;
+    try { const r = await apiGet('audio'); if (r.ok) { setAudio(b64ToBlob(r.data, r.mime)); $('#mainPlay').disabled = false; } }
+    catch (e) { /* 播放鍵維持停用；重新整理即可 */ }
+  }
+  function togglePlay(btn, box) {
+    if (!au.paused && playingBtn === btn) { au.pause(); return; }
+    playingBtn = btn; playerBox = box;
+    au.currentTime = 0; au.play().catch(() => {});
+  }
+  au.onplay = () => { if (playerBox) playerBox.classList.add('spin'); if (playingBtn) { playingBtn.textContent = '❚❚'; playingBtn.setAttribute('aria-label', t('stop')); } };
+  au.onpause = au.onended = () => { if (playerBox) playerBox.classList.remove('spin'); if (playingBtn) { playingBtn.textContent = '▶'; playingBtn.setAttribute('aria-label', t('play')); } $('#mainProg').style.width = '0'; };
+  au.ontimeupdate = () => { if (au.duration && playingBtn === $('#mainPlay')) $('#mainProg').style.width = (au.currentTime / au.duration * 100) + '%'; };
+  $('#reviewPlay').onclick = () => togglePlay($('#reviewPlay'), $('#pv1'));
+  $('#mainPlay').onclick = () => togglePlay($('#mainPlay'), $('#pv2'));
+
+  /* ---------- 首次與同意 ---------- */
+  document.addEventListener('click', e => { if (e.target.closest('[data-scroll]')) $('#route').scrollIntoView({ behavior: 'smooth' }); });
+  $('#toConsent').onclick = () => { S.rerecord = false; $('#pinSet').hidden = false; $('#cErr').hidden = true; show('vConsent'); };
+  $('#backStart').onclick = () => { stopRec(true); show(S.rerecord ? 'vPlay' : 'vStart'); };
+  const pins = ['#p1', '#p2', '#p3', '#p4'].map(s => $(s));
+  pins.forEach((el, i) => {
+    el.addEventListener('input', () => { el.value = el.value.replace(/\D/g, '').slice(-1); if (el.value && pins[i + 1]) pins[i + 1].focus(); });
+    el.addEventListener('keydown', e => { if (e.key === 'Backspace' && !el.value && pins[i - 1]) pins[i - 1].focus(); });
+  });
+  $('#toRec').onclick = () => {
+    const pin = S.rerecord ? S.pin : pins.map(p => p.value).join('');
+    const err = !$('#agree').checked ? t('errAgree') : !/^\d{4}$/.test(pin) ? t('errPin') : '';
+    $('#cErr').hidden = !err; $('#cErr').textContent = err;
+    if (err) return;
+    S.pin = pin; resetRec(); show('vRec');
+  };
+
+  /* ---------- 錄音 ---------- */
+  const meter = $('#meter'); meter.innerHTML = '<i></i>'.repeat(22);
+  const bars = [...meter.children];
+  let rec = null, stream = null, chunks = [], t0 = 0, tick = null, actx = null, analyser = null;
+  function pickMime() {
+    if (!window.MediaRecorder) return '';
+    return ['audio/mp4', 'audio/mp4;codecs=mp4a.40.2', 'audio/aac', 'audio/webm;codecs=opus', 'audio/webm'].find(m => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || '';
+  }
+  function micHelp(k) { const h = $('#micHelp'); h.dataset.k = k; h.innerHTML = t(k); h.hidden = false; }
+  function resetRec() {
+    clearInterval(tick); tick = null; $('#recBox').classList.remove('recording');
+    $('#clock').innerHTML = '0:00 <small>/ 1:00</small>'; bars.forEach(b => { b.style.height = '8px'; });
+    $('#recHint').textContent = t('recIdle'); $('#recBtn').setAttribute('aria-label', t('recStart'));
+    $('#micHelp').hidden = true;
+  }
+  function stopRec(discard) {
+    if (rec && rec.state !== 'inactive') { rec.discard = !!discard; rec.stop(); }
+    clearInterval(tick); tick = null;
+  }
+  async function startRec() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { micHelp('noMic'); return; }
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+    catch (e) { micHelp('micDenied'); return; }
+    $('#micHelp').hidden = true;
+    const mime = pickMime();
+    try { rec = new MediaRecorder(stream, Object.assign({ audioBitsPerSecond: 64000 }, mime ? { mimeType: mime } : {})); }
+    catch (e) { rec = new MediaRecorder(stream); }
+    chunks = [];
+    rec.ondataavailable = ev => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+    rec.onstop = () => {
+      stream.getTracks().forEach(tr => tr.stop());
+      if (actx) { try { actx.close(); } catch (e) {} actx = null; }
+      const secs = (Date.now() - t0) / 1000;
+      const discard = rec.discard; const type = (rec.mimeType || mime || 'audio/mp4').split(';')[0];
+      rec = null; resetRec();
+      if (discard || !chunks.length) return;
+      S.blob = new Blob(chunks, { type }); S.mime = type; S.seconds = Math.min(secs, MAX_SECONDS);
+      setAudio(S.blob); $('#reviewLen').textContent = t('len') + ' ' + fmt(S.seconds); $('#sErr').hidden = true;
+      show('vReview');
+    };
+    try { actx = new (window.AudioContext || window.webkitAudioContext)(); analyser = actx.createAnalyser(); analyser.fftSize = 64; actx.createMediaStreamSource(stream).connect(analyser); } catch (e) { analyser = null; }
+    rec.start(1000); t0 = Date.now();
+    $('#recBox').classList.add('recording'); $('#recHint').textContent = t('recOn'); $('#recBtn').setAttribute('aria-label', t('recStop'));
+    const buf = analyser ? new Uint8Array(analyser.frequencyBinCount) : null;
+    tick = setInterval(() => {
+      const s = (Date.now() - t0) / 1000;
+      $('#clock').innerHTML = fmt(s) + ' <small>/ 1:00</small>';
+      if (buf) { analyser.getByteFrequencyData(buf); bars.forEach((b, i) => { b.style.height = (8 + (buf[i % buf.length] / 255) * 48) + 'px'; }); }
+      if (s >= MAX_SECONDS) stopRec(false);
+    }, 90);
+  }
+  $('#recBtn').onclick = () => { if (rec) stopRec(false); else startRec(); };
+
+  // 上傳錄音檔（備案）
+  $('#upFile').addEventListener('change', e => {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    const ext = (f.name.split('.').pop() || '').toLowerCase();
+    const type = f.type || { m4a: 'audio/mp4', mp3: 'audio/mpeg', aac: 'audio/aac', wav: 'audio/wav' }[ext] || '';
+    if (!type || f.size > MAX_BYTES) { micHelp('badFile'); return; }
+    const probe = new Audio(); probe.preload = 'metadata';
+    probe.onloadedmetadata = () => {
+      const d = probe.duration; URL.revokeObjectURL(probe.src);
+      if (isFinite(d) && d > MAX_SECONDS + 2) { micHelp('badFile'); return; }
+      S.blob = f; S.mime = type === 'audio/x-m4a' ? 'audio/mp4' : type; S.seconds = isFinite(d) ? d : 0;
+      setAudio(f); $('#reviewLen').textContent = t('len') + ' ' + fmt(S.seconds); $('#sErr').hidden = true; show('vReview');
+    };
+    probe.onerror = () => { micHelp('badFile'); };
+    probe.src = URL.createObjectURL(f);
+  });
+
+  /* ---------- 保存 ---------- */
+  $('#redo').onclick = () => { au.pause(); resetRec(); show('vRec'); };
+  $('#save').onclick = async () => {
+    au.pause();
+    const btn = $('#save'); btn.disabled = true; btn.textContent = t('saving'); $('#sErr').hidden = true;
+    try {
+      const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(S.blob); });
+      const res = await apiPost({ action: 'save', pin: S.pin, agree: true, exhibit: $('#exhibit').checked, mime: S.mime, seconds: S.seconds, data: data, lang: lang });
+      if (!res.ok) {
+        if (res.error === 'locked') throw new Error(t('pinLocked', { m: res.minutes }));
+        if (res.error === 'pin') throw new Error(t('pinBad', { n: res.left }));
+        if (res.error === 'size' || res.error === 'format') throw new Error(t('badFile'));
+        throw new Error(errMsg(res.error));
+      }
+      S.recordedAt = res.recordedAt; S.deleted = false; S.rerecord = false;
+      $('#recDate').textContent = t('recDate', { d: fmtDate(S.recordedAt) });
+      $('#savedMsg').hidden = false; $('#mainPlay').disabled = false; $('#pinBox').hidden = true;
+      show('vPlay');
+    } catch (e) { $('#sErr').hidden = false; $('#sErr').textContent = e.message && e.message !== 'Failed to fetch' ? e.message : t('eNet'); }
+    finally { btn.disabled = false; btn.textContent = t('save'); }
+  };
+
+  /* ---------- 重錄、刪除 ---------- */
+  let delArmed = false;
+  $('#toPin').onclick = () => { const b = $('#pinBox'); b.hidden = !b.hidden; $('#pinAll').value = ''; $('#pErr').hidden = true; $('#delAsk').hidden = true; delArmed = false; if (!b.hidden) $('#pinAll').focus(); };
+  function pinErr(res) { $('#pErr').hidden = false; $('#pErr').textContent = res.error === 'locked' ? t('pinLocked', { m: res.minutes }) : res.error === 'pin' ? t('pinBad', { n: res.left }) : errMsg(res.error); }
+  $('#pinRedo').onclick = async () => {
+    const pin = $('#pinAll').value.trim(); if (!/^\d{4}$/.test(pin)) { $('#pErr').hidden = false; $('#pErr').textContent = t('errPin'); return; }
+    const btn = $('#pinRedo'); btn.disabled = true;
+    try {
+      const res = await apiPost({ action: 'verify', pin: pin });
+      if (!res.ok) { pinErr(res); return; }
+      au.pause(); S.pin = pin; S.rerecord = true; $('#pinSet').hidden = true; $('#cErr').hidden = true; $('#agree').checked = false; show('vConsent');
+    } catch (e) { pinErr({ error: 'network' }); } finally { btn.disabled = false; }
+  };
+  $('#pinDel').onclick = async () => {
+    const pin = $('#pinAll').value.trim(); if (!/^\d{4}$/.test(pin)) { $('#pErr').hidden = false; $('#pErr').textContent = t('errPin'); return; }
+    $('#pErr').hidden = true;
+    if (!delArmed) { delArmed = true; $('#delAsk').hidden = false; return; }
+    const btn = $('#pinDel'); btn.disabled = true;
+    try {
+      const res = await apiPost({ action: 'delete', pin: pin });
+      if (!res.ok) { pinErr(res); delArmed = false; $('#delAsk').hidden = true; return; }
+      au.pause(); au.removeAttribute('src'); delArmed = false; $('#delAsk').hidden = true; $('#pinBox').hidden = true;
+      S.deleted = true; S.recordedAt = ''; S.pin = ''; pins.forEach(p => { p.value = ''; }); $('#agree').checked = false; $('#exhibit').checked = false;
+      show('vStart');
+    } catch (e) { pinErr({ error: 'network' }); } finally { btn.disabled = false; }
+  };
+
+  /* ---------- 啟動 ---------- */
+  applyLang();
+  if (!code) { VIEWS.forEach(id => { $('#' + id).hidden = true; }); head(); return; }
+  apiGet('get').then(r => {
+    if (!r.ok) { showError(r.error === 'notfound' ? 'eNotFound' : 'eNotFound'); return; }
+    S.no = r.no; head();
+    if (r.status === 'removed') { showError('eRemoved'); return; }
+    if (r.status === 'recorded') { S.recordedAt = r.recordedAt; $('#recDate').textContent = t('recDate', { d: fmtDate(r.recordedAt) }); show('vPlay'); loadSaved(); return; }
+    show('vStart');
+  }).catch(() => { $('#errTitle').textContent = t('eNet'); $('#errBody').textContent = ''; show('vError'); });
+})();
+</script>
+</body>
+</html>
