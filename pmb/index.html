@@ -92,6 +92,7 @@ main{padding:20px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(saf
 .fbname:not([href]) svg{display:none}
 .route h2.vn{margin:0 0 4px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.chk .note,label .note{display:block;margin-top:4px;font-size:12px;line-height:1.6;color:var(--muted)}
 .mapbox{margin-top:18px;display:flex;flex-direction:column;gap:10px}
 .maptabs{display:flex;gap:6px;flex-wrap:wrap}
 .maptabs button{min-height:36px;padding:0 12px;border-radius:99px;border:1px solid var(--ink);background:#fff;font-size:13px;font-weight:700;cursor:pointer}
@@ -229,7 +230,7 @@ const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
       consentH: '錄音前，先確認兩件事', rule1: '錄音最長 1 分鐘，存在本鑰匙圈專屬的位置。', rule2: '請勿錄製政治宣傳、商業廣告或不當言論。', rule3: '拿到這個鑰匙圈的人都能聽到這段錄音。',
       minor: '未滿 18 歲請由家長或監護人勾選。',
       agree: '<b>（必填）</b>我同意上述說明，並同意依個人資料保護法保存本段錄音，作為本鑰匙圈紀念用途。',
-      exhibit: '<b>（選填）</b>我願意讓這段錄音在太平洋音樂基地（花蓮港放送局1944、花蓮鐵道文化園區二館舊工務段）館內展示，及用於成果紀錄，以匿名方式呈現，不顯示姓名。本項授權花蓮縣文化局及其委託之營運單位無償使用；我可以隨時用密碼刪除錄音，已展示的內容將於下次更新展示時移除。不勾選也可以錄音。',
+      exhibit: '<b>（選填）</b>我願意分享這段聲音，讓它成為館內展覽的一部分。<small class="note">展示地點為花蓮港放送局1944、花蓮鐵道文化園區二館舊工務段，也可能用於活動成果紀錄；一律匿名、不顯示姓名，由花蓮縣文化局及其委託之營運單位使用。你可以隨時用密碼刪除錄音，已展示的內容會在下次更新展示時移除。不勾選也可以錄音。</small>',
       pinH: '設一組 4 位數密碼', pinHint: '之後要重錄或刪除時使用，避免別人拿到鑰匙圈蓋掉你的錄音。請自行記住，忘記密碼就無法重錄或刪除。',
       next: '下一步：開始錄音', back: '返回', errAgree: '請先勾選必填的同意項目', errPin: '請設定 4 位數密碼',
       recH: '準備好就按紅色按鈕', recTip: '第一次會詢問麥克風權限，請按「允許」。可以說一段話、哼一段旋律，或錄下現場的聲音。',
@@ -261,7 +262,7 @@ const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
       consentH: 'Before you record', rule1: 'Up to 1 minute, saved to this keychain only.', rule2: 'No political campaigning, advertising or offensive content.', rule3: 'Anyone holding this keychain can hear the recording.',
       minor: 'Under 18? A parent or guardian should tick these boxes.',
       agree: '<b>(Required)</b> I agree to the above and consent to this recording being kept as a keepsake for this keychain under Taiwan’s Personal Data Protection Act.',
-      exhibit: '<b>(Optional)</b> I allow this recording to be played in exhibitions at the Pacific Music Base (Karenko Broadcasting Station 1944 and Hualien Railway Culture Park Hall 2, Old Construction Section) and used in program records, anonymously and without my name. This permission is given free of charge to the Hualien County Cultural Affairs Bureau and its commissioned operators. I can delete the recording at any time with my PIN, and recordings already on display will be removed at the next exhibition update. You can record without ticking this box.',
+      exhibit: '<b>(Optional)</b> I’d like to share this sound and let it become part of an exhibition at the venue.<small class="note">It may be played at the Karenko Broadcasting Station 1944 and Hualien Railway Culture Park Hall 2, Old Construction Section, and used in program records, always anonymously, by the Hualien County Cultural Affairs Bureau and its commissioned operators. You can delete it at any time with your PIN; anything on display will be removed at the next exhibition update. You can record without ticking this box.</small>',
       pinH: 'Set a 4-digit PIN', pinHint: 'You will need it to re-record or delete, so nobody else can overwrite your recording. Please remember it. A forgotten PIN cannot be recovered.',
       next: 'Next: start recording', back: 'Back', errAgree: 'Please tick the required box first.', errPin: 'Please set a 4-digit PIN.',
       recH: 'Press the red button when ready', recTip: 'Your phone will ask for microphone access the first time. Tap “Allow”. Say a few words, hum a tune, or capture the sounds around you.',
@@ -293,7 +294,7 @@ const MAX_SECONDS = 60, MAX_BYTES = 1.35 * 1024 * 1024;
       consentH: '録音の前に', rule1: '録音は最長1分、このキーホルダー専用に保存されます。', rule2: '政治宣伝、広告、不適切な内容は録音しないでください。', rule3: 'このキーホルダーを持つ人は誰でも録音を聞くことができます。',
       minor: '18歳未満の方は、保護者の方がチェックしてください。',
       agree: '<b>（必須）</b>上記に同意し、このキーホルダーの記念として、台湾の個人情報保護法に基づき録音を保存することに同意します。',
-      exhibit: '<b>（任意）</b>この録音を太平洋音楽基地（花蓮港放送局1944・花蓮鉄道文化園区二館旧工務段）の館内展示および活動記録に、匿名（氏名非表示）で使用することに同意します。花蓮県文化局およびその委託運営者に無償で許諾します。暗証番号でいつでも録音を削除でき、展示中のものは次回の展示更新時に取り下げられます。チェックしなくても録音できます。',
+      exhibit: '<b>（任意）</b>この音を共有し、館内展示の一部にすることに同意します。<small class="note">展示場所は花蓮港放送局1944・花蓮鉄道文化園区二館旧工務段で、活動記録に使われる場合もあります。すべて匿名（氏名非表示）で、花蓮県文化局およびその委託運営者が使用します。暗証番号でいつでも削除でき、展示中のものは次回の展示更新時に取り下げられます。チェックしなくても録音できます。</small>',
       pinH: '4桁の暗証番号を設定', pinHint: '録り直しや削除に使います。他の人に上書きされないためのものです。忘れると録り直し・削除ができませんのでご注意ください。',
       next: '次へ：録音を始める', back: '戻る', errAgree: '必須の項目にチェックしてください。', errPin: '4桁の暗証番号を設定してください。',
       recH: '準備ができたら赤いボタンを', recTip: '初回はマイクの使用許可を求められます。「許可」を押してください。言葉でも、鼻歌でも、その場の音でもかまいません。',
